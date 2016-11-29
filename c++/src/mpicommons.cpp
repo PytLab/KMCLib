@@ -28,12 +28,8 @@ void MPICommons::init()
 
     // Switch for using MPI.
 #if RUNMPI == true
-    // Dummy args.
-    int argc = 0;
-    char** argv;
-
     // Make the init call.
-    MPI_Init( &argc, &argv );
+    MPI::Init();
 
     // Set the flag to prevent further calls.
     inited__ = true;
@@ -51,19 +47,19 @@ void MPICommons::finalize()
     }
 
 #if RUNMPI == true
-        MPI_Finalize();
-        finalized__ = true;
+    MPI::Finalize();
+    finalized__ = true;
 #endif
 }
 
 
 // -----------------------------------------------------------------------------
 //
-int MPICommons::myRank(const MPI_Comm comm)
+int MPICommons::myRank(const MPI::Intracomm & comm)
 {
 #if RUNMPI == true
     int rank;
-    MPI_Comm_rank( comm, &rank );
+    rank = comm.Get_rank();
     return rank;
 #else
     return 0;
@@ -73,11 +69,11 @@ int MPICommons::myRank(const MPI_Comm comm)
 
 // -----------------------------------------------------------------------------
 //
-int MPICommons::size(const MPI_Comm comm)
+int MPICommons::size(const MPI::Intracomm & comm)
 {
 #if RUNMPI == true
     int size;
-    MPI_Comm_size( comm, &size );
+    size = comm.Get_size();
     return size;
 #else
     return 1;
@@ -87,9 +83,10 @@ int MPICommons::size(const MPI_Comm comm)
 
 // -----------------------------------------------------------------------------
 //
-void MPICommons::barrier(const MPI_Comm comm)
+void MPICommons::barrier(const MPI::Intracomm & comm)
 {
 #if RUNMPI == true
-    MPI_Barrier( comm );
+    comm.Barrier();
 #endif
 }
+

@@ -32,22 +32,23 @@ struct MPICommons {
      *  \param comm: The communicator to use.
      *  \return: The rank of this process withing the given communicator.
      */
-    static int myRank(const MPI_Comm comm=MPI_COMM_WORLD);
+    static int myRank(const MPI::Intracomm & comm=MPI::COMM_WORLD);
 
     /*! \brief Wrapps MPI_COMM_SIZE
      *  \param comm: The communicator to use.
      *  \return: The sise of the communicator (the total number of processes).
      */
-    static int size(const MPI_Comm comm=MPI_COMM_WORLD);
+    static int size(const MPI::Intracomm & comm=MPI::COMM_WORLD);
 
     /*! \brief Wrapps MPI_BARRIER, syncronizing processes.
      *  \param comm: The communicator to use.
      */
-    static void barrier(const MPI_Comm comm=MPI_COMM_WORLD);
+    static void barrier(const MPI::Intracomm & comm=MPI::COMM_WORLD);
 
     /*! \brief Returns true if the calling process is the master.
      */
-    static bool isMaster(const MPI_Comm comm=MPI_COMM_WORLD) { return (myRank(comm) == 0); }
+    static bool isMaster(const MPI::Intracomm & comm=MPI::COMM_WORLD)
+    { return (myRank(comm) == 0); }
 
 
 

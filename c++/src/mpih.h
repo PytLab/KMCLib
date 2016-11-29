@@ -23,8 +23,11 @@
 #if RUNMPI == true
 #include <mpi.h>
 #else
-typedef int MPI_Comm;
-#define MPI_COMM_WORLD 91
+namespace MPI
+{
+    typedef int Interacomm;
+    static int COMM_WORLD;
+}
 #endif
 
 #endif // __MPIH__
