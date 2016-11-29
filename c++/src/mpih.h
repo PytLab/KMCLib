@@ -23,9 +23,10 @@
 #if RUNMPI == true
 #include <mpi.h>
 #else
+// Redefine the MPI namespace.
 namespace MPI
 {
-    typedef int Interacomm;
+    typedef int Intracomm;
     static int COMM_WORLD;
 }
 #endif
