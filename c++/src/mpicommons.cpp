@@ -21,7 +21,10 @@ bool finalized__ = false;
 //
 void MPICommons::init()
 {
-   if (inited__)
+    int is_inited;
+    initialized(&is_inited);
+
+    if (is_inited)
     {
         return;
     }
@@ -34,9 +37,18 @@ void MPICommons::init()
 
     // Make the init call.
     MPI_Init( &argc, &argv );
+#endif
+}
 
-    // Set the flag to prevent further calls.
-    inited__ = true;
+
+// -----------------------------------------------------------------------------
+//
+void MPICommons::initialized(int* flag)
+{
+#if RUNMPI == true
+    MPI_Initialized(flag);
+#else
+    *flag = 1;
 #endif
 }
 
@@ -45,14 +57,28 @@ void MPICommons::init()
 //
 void MPICommons::finalize()
 {
-    if (finalized__)
+    int is_finalized;
+    finalized(&is_finalized);
+
+    if (is_finalized)
     {
         return;
     }
 
 #if RUNMPI == true
-        MPI_Finalize();
-        finalized__ = true;
+    MPI_Finalize();
+#endif
+}
+
+
+// -----------------------------------------------------------------------------
+//
+void MPICommons::finalized(int* flag)
+{
+#if RUNMPI == true
+    MPI_Finalized(flag);
+#else
+    *flag = 0;
 #endif
 }
 
